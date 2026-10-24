@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SINDAW Pickleball Club Qatar</title>
+<style>
+:root{--navy:#102a43;--green:#0f9d78;--mint:#e9f8f2;--bg:#f4f7fb;--ink:#1c2b36;--muted:#6b7b88;--line:#e2e9ef}
+*{box-sizing:border-box}body{margin:0;font-family:Inter,Arial,sans-serif;background:var(--bg);color:var(--ink)}
+header{background:linear-gradient(120deg,#102a43,#176b58);color:white;padding:22px 24px}
+header h1{margin:0;font-size:clamp(20px,3vw,29px)}header p{margin:7px 0 0;color:#d7f4e9}
+.shell{display:flex;min-height:calc(100vh - 100px)}aside{width:220px;background:white;border-right:1px solid var(--line);padding:18px 12px}
+nav button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px 13px;border-radius:9px;margin:3px 0;font-size:15px;color:#415260;cursor:pointer}
+nav button.active,nav button:hover{background:var(--mint);color:#087957;font-weight:700}
+main{padding:24px;width:100%;max-width:1400px;margin:0 auto}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+h2{margin:0 0 16px;font-size:24px}.sub{color:var(--muted);margin-top:-8px;margin-bottom:20px}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:18px 0}
+.card,.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #15364a08}
+.metric{font-size:29px;font-weight:800;color:var(--navy);margin:8px 0}.label{font-size:13px;color:var(--muted)}
+.panel{margin-top:16px}.panel h3{margin:0 0 14px}
+.btn{border:0;background:var(--green);color:white;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.btn.secondary{background:#eaf1f5;color:#234}.btn.danger{background:#b42318}
+input,select,textarea{font:inherit;border:1px solid #cdd8e0;border-radius:8px;padding:10px;width:100%;background:white}
+.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 8px}th{color:var(--muted);font-weight:700;background:#fafcfd}
+.tablewrap{overflow-x:auto}.empty{padding:18px;color:var(--muted);text-align:center}.pill{background:var(--mint);color:#087957;padding:4px 8px;border-radius:99px;font-size:12px}
+.notice{font-size:13px;color:#526575;line-height:1.5;background:#f7fafc;border:1px solid var(--line);padding:12px;border-radius:9px;margin-top:16px}
+.actions{display:flex;gap:8px;flex-wrap:wrap}.small{font-size:12px;color:var(--muted)}
+@media(max-width:720px){.shell{display:block}aside{width:100%;border-right:0;border-bottom:1px solid var(--line);padding:8px}nav{display:flex;overflow:auto;gap:4px}nav button{white-space:nowrap;width:auto;padding:10px}main{padding:16px}}
+</style>
+</head>
+<body>
+<header><h1>🏓 SINDAW Pickleball Club Qatar</h1><p>Club Management System · Courts · Tournaments · Players · Matches</p></header>
+<div class="shell"><aside><nav id="nav"></nav></aside><main id="app"></main></div>
+<script>
+const sections=["Dashboard","Courts","Tournaments","Players","Matches","Reports"];
+let current="Dashboard";
+const keys={Courts:"sindaw_courts",Tournaments:"sindaw_tournaments",Players:"sindaw_players",Matches:"sindaw_matches"};
+function get(k){try{return JSON.parse(localStorage.getItem(keys[k])||"[]")}catch{return []}}
+function save(k,v){localStorage.setItem(keys[k],JSON.stringify(v))}
+function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function nav(){document.getElementById("nav").innerHTML=sections.map(s=>`<button class="${s===current?"active":""}" onclick="go('${s}')">${s==="Dashboard"?"▦":s==="Courts"?"▤":s==="Tournaments"?"🏆":s==="Players"?"♙":s==="Matches"?"🎾":"▥"} &nbsp;${s}</button>`).join("")}
+function go(s){current=s;nav();render()}
+function metric(label,value){return `<div class="card"><div class="label">${label}</div><div class="metric">${value}</div></div>`}
+function table(items,fields,k){if(!items.length)return `<div class="empty">No records yet. Add your first record above.</div>`;return `<div class="tablewrap"><table><thead><tr>${fields.map(f=>`<th>${f[1]}</th>`).join("")}<th>Action</th></tr></thead><tbody>${items.map((it,i)=>`<tr>${fields.map(f=>`<td>${esc(it[f[0]])}</td>`).join("")}<td><button class="btn danger" style="padding:6px 9px" onclick="del('${k}',${i})">Delete</button></td></tr>`).join("")}</tbody></table></div>`}
+function del(k,i){let a=get(k);a.splice(i,1);save(k,a);render()}
+const configs={
+Courts:{fields:[["name","Court name"],["location","Location"],["status","Status"]],inputs:[["name","Court name","text"],["location","Location","text"],["status","Status","select","Available,Reserved,Maintenance"]]},
+Tournaments:{fields:[["name","Tournament"],["date","Date"],["format","Format"],["status","Status"]],inputs:[["name","Tournament name","text"],["date","Date","date"],["format","Format","select","Men's Doubles,Mixed Doubles,Women's Doubles,Round Robin,Single Elimination"],["status","Status","select","Planning,Registration Open,In Progress,Completed"]]},
+Players:{fields:[["name","Player name"],["phone","Contact"],["skill","Level"],["status","Status"]],inputs:[["name","Player full name","text"],["phone","Phone / email","text"],["skill","Skill level","select","Beginner,Intermediate,Advanced"],["status","Status","select","Active,Inactive"]]},
+Matches:{fields:[["date","Date"],["court","Court"],["players","Players / Teams"],["score","Score"],["status","Status"]],inputs:[["date","Date","date"],["court","Court","text"],["players","Players / Teams","text"],["score","Score","text"],["status","Status","select","Scheduled,In Progress,Completed"]]}
+};
+function form(k,c){return `<form onsubmit="add(event,'${k}')"><div class="formgrid">${c.inputs.map(x=>`<div><label class="small">${x[1]}</label>${x[2]==="select"?`<select name="${x[0]}">${x[3].split(",").map(v=>`<option>${v}</option>`).join("")}</select>`:`<input name="${x[0]}" type="${x[2]}" placeholder="${x[1]}" ${x[2]==="text"?"required":""}>`}</div>`).join("")}<div style="display:flex;align-items:end"><button class="btn" type="submit">＋ Add record</button></div></div></form>`}
+function add(e,k){e.preventDefault();let obj=Object.fromEntries(new FormData(e.target).entries());let a=get(k);a.push(obj);save(k,a);render()}
+function render(){
+const app=document.getElementById("app");
+if(current==="Dashboard"){
+app.innerHTML=`<div class="topline"><div><h2>Club Dashboard</h2><div class="sub">Welcome to your club's management workspace.</div></div><span class="pill">SINDAW · Qatar</span></div><div class="cards">${metric("Registered Players",get("Players").length)}${metric("Courts",get("Courts").length)}${metric("Tournaments",get("Tournaments").length)}${metric("Matches",get("Matches").length)}</div><div class="panel"><h3>Quick start</h3><p>Add your courts and players first, then create tournaments and schedule matches.</p><div class="actions">${sections.slice(1,5).map(s=>`<button class="btn secondary" onclick="go('${s}')">Manage ${s}</button>`).join("")}</div></div><div class="notice"><b>Storage note:</b> This starter version saves records in this browser on this device. It does not yet have online shared storage, secure user accounts, or automatic backups. Avoid entering sensitive personal information.</div>`;
+}else if(current==="Reports"){
+app.innerHTML=`<h2>Reports</h2><div class="sub">Current record totals based on this browser's saved data.</div><div class="cards">${Object.keys(keys).map(k=>metric(k,get(k).length)).join("")}</div><div class="panel"><h3>Export data backup</h3><p>Download the current browser records as a JSON backup.</p><button class="btn" onclick="exportData()">Download backup</button> <button class="btn secondary" onclick="document.getElementById('importFile').click()">Import backup</button><input id="importFile" type="file" accept=".json,application/json" style="display:none" onchange="importData(event)"></div>`;
+}else{let c=configs[current];app.innerHTML=`<div class="topline"><h2>${current}</h2><span class="pill">${get(current).length} records</span></div><div class="panel"><h3>Add ${current.slice(0,-1)==="Tournamen"?"tournament":current.slice(0,-1)}</h3>${form(current,c)}</div><div class="panel"><h3>${current} list</h3>${table(get(current),c.fields,current)}</div>`}
+}
+function exportData(){let d={};Object.keys(keys).forEach(k=>d[k]=get(k));let b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="sindaw-club-backup.json";a.click();URL.revokeObjectURL(a.href)}
+function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);Object.keys(keys).forEach(k=>{if(Array.isArray(d[k]))save(k,d[k])});render();alert("Backup imported.")}catch{alert("That backup file could not be read.")}};r.readAsText(f)}
+nav();render();
+</script>
+</body></html>
