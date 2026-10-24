@@ -1,16 +1,1373 @@
-<!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MBQ Pickleball Club</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>MBQ Pickleball Club Management</title>
+
 <style>
-:root{--navy:#102a43;--green:#0f9d78;--mint:#e9f8f2;--bg:#f4f7fb;--ink:#1c2b36;--muted:#6b7b88;--line:#e2e9ef}*{box-sizing:border-box}body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--ink)}header{background:linear-gradient(120deg,#102a43,#176b58);color:white;padding:22px 24px}header h1{margin:0;font-size:clamp(22px,3vw,30px)}header p{margin:7px 0 0;color:#d7f4e9}.shell{display:flex;min-height:calc(100vh - 100px)}aside{width:220px;background:white;border-right:1px solid var(--line);padding:18px 12px}nav button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:12px 13px;border-radius:9px;margin:3px 0;font-size:15px;color:#415260;cursor:pointer}nav button.active,nav button:hover{background:var(--mint);color:#087957;font-weight:700}main{padding:24px;width:100%;max-width:1400px;margin:0 auto}.topline{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}h2{margin:0 0 16px;font-size:24px}.sub{color:var(--muted);margin-top:-8px;margin-bottom:20px}.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:14px;margin:18px 0}.card,.panel{background:white;border:1px solid var(--line);border-radius:14px;padding:18px;box-shadow:0 3px 12px #15364a08}.metric{font-size:29px;font-weight:800;color:var(--navy);margin:8px 0}.label{font-size:13px;color:var(--muted)}.panel{margin-top:16px}.panel h3{margin:0 0 14px}.btn{border:0;background:var(--green);color:white;border-radius:9px;padding:10px 14px;font-weight:700;cursor:pointer}.btn.secondary{background:#eaf1f5;color:#234}.btn.danger{background:#b42318}input,select{font:inherit;border:1px solid #cdd8e0;border-radius:8px;padding:10px;width:100%;background:white}.formgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:12px 0}table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;border-bottom:1px solid var(--line);padding:11px 8px}th{color:var(--muted);font-weight:700;background:#fafcfd}.tablewrap{overflow-x:auto}.empty{padding:18px;color:var(--muted);text-align:center}.pill{background:var(--mint);color:#087957;padding:4px 8px;border-radius:99px;font-size:12px}.notice{font-size:13px;color:#526575;line-height:1.5;background:#f7fafc;border:1px solid var(--line);padding:12px;border-radius:9px;margin-top:16px}.actions{display:flex;gap:8px;flex-wrap:wrap}.small{font-size:12px;color:var(--muted)}@media(max-width:720px){.shell{display:block}aside{width:100%;border-right:0;border-bottom:1px solid var(--line);padding:8px}nav{display:flex;overflow:auto;gap:4px}nav button{white-space:nowrap;width:auto;padding:10px}main{padding:16px}}
-<img src="mbq-logo.png"alt="MBQ Pickleball Club Logo"style="width:100px;height:100px;object-fit:contain;"
-></style></head><body><header><h1>🏓 MBQ Pickleball Club</h1><p>Club Management System · Courts · Tournaments · Players · Matches</p></header><div class="shell"><aside><nav id="nav"></nav></aside><main id="app"></main></div>
+*{box-sizing:border-box}
+body{
+ margin:0;
+ font-family:Arial,sans-serif;
+ background:#f1f5f9;
+ color:#1e293b
+}
+header{
+ background:#064e3b;
+ color:white;
+ padding:22px;
+ text-align:center
+}
+header h1{margin:0;font-size:25px}
+header p{margin:7px 0 0;color:#d1fae5}
+nav{
+ display:flex;
+ flex-wrap:wrap;
+ gap:6px;
+ padding:12px;
+ background:#fff;
+ position:sticky;
+ top:0;
+ z-index:10;
+ box-shadow:0 2px 5px #0001
+}
+nav button{
+ border:0;
+ background:#e2e8f0;
+ padding:11px 14px;
+ border-radius:7px;
+ cursor:pointer;
+ font-weight:bold
+}
+nav button.active{background:#047857;color:white}
+main{padding:15px;max-width:1200px;margin:auto}
+.page{display:none}
+.page.active{display:block}
+.cards{
+ display:grid;
+ grid-template-columns:repeat(auto-fit,minmax(145px,1fr));
+ gap:12px;margin:15px 0
+}
+.card,.panel{
+ background:white;
+ padding:17px;
+ border-radius:12px;
+ box-shadow:0 2px 8px #00008
+}
+.card small{color:#64748b}
+.number{
+ font-size:29px;
+ font-weight:bold;
+ color:#047857;
+ margin-top:8px
+}
+h2{color:#065f46}
+h3{margin-top:0}
+input,select,textarea{
+ width:100%;
+ padding:11px;
+ margin:6px 0 12px;
+ border:1px solid #cbd5e1;
+ border-radius:7px;
+ font-size:15px
+}
+label{font-weight:bold;font-size:13px}
+button{cursor:pointer}
+.btn{
+ border:0;
+ background:#047857;
+ color:white;
+ padding:11px 15px;
+ border-radius:7px;
+ margin:3px
+}
+.btn.secondary{background:#475569}
+.btn.danger{background:#dc2626}
+.btn.light{background:#e2e8f0;color:#1e293b}
+table{
+ width:100%;
+ border-collapse:collapse;
+ background:white;
+ margin-top:10px
+}
+th,td{
+ padding:10px;
+ border-bottom:1px solid #e2e8f0;
+ text-align:left;
+ font-size:13px
+}
+th{background:#ecfdf5;color:#065f46}
+.table-wrap{overflow-x:auto}
+.status{
+ padding:4px 8px;
+ border-radius:15px;
+ background:#d1fae5;
+ color:#065f46
+}
+.actions{white-space:nowrap}
+.notice{color:#64748b;font-size:13px}
+footer{text-align:center;padding:20px;color:#64748b}
+@media(max-width:600px){
+ header h1{font-size:21px}
+ nav button{font-size:12px;padding:9px}
+ main{padding:9px}
+ th,td{padding:8px}
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<h1>MBQ PICKLEBALL CLUB</h1>
+<p>Complete Club Management System</p>
+</header>
+
+<nav>
+<button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
+<button onclick="showPage('members',this)">Members</button>
+<button onclick="showPage('tournaments',this)">Tournaments</button>
+<button onclick="showPage('matches',this)">Matches</button>
+<button onclick="showPage('rankings',this)">Rankings</button>
+<button onclick="showPage('payments',this)">Payments</button>
+<button onclick="showPage('reports',this)">Reports</button>
+</nav>
+
+<main>
+
+<!-- DASHBOARD -->
+
+<section id="dashboard" class="page active">
+
+<h2>Admin Dashboard</h2>
+
+<div class="cards">
+
+<div class="card">
+<small>Total Members</small>
+<div class="number" id="dashMembers">0</div>
+</div>
+
+<div class="card">
+<small>Active Members</small>
+<div class="number" id="dashActive">0</div>
+</div>
+
+<div class="card">
+<small>Tournaments</small>
+<div class="number" id="dashTournaments">0</div>
+</div>
+
+<div class="card">
+<small>Matches Played</small>
+<div class="number" id="dashMatches">0</div>
+</div>
+
+<div class="card">
+<small>Payments Received</small>
+<div class="number" id="dashPayments">0</div>
+</div>
+
+</div>
+
+<div class="panel">
+<h3>Club Information</h3>
+<p>MBQ Pickleball Club</p>
+<p>Management Dashboard</p>
+<p class="notice">Use the menu above to manage your club records.</p>
+</div>
+
+</section>
+
+<!-- MEMBERS -->
+
+<section id="members" class="page">
+
+<h2>Member Management</h2>
+
+<div class="panel">
+
+<h3>Register Member</h3>
+
+<form id="memberForm">
+
+<input type="hidden" id="memberEdit">
+
+<label>Member Name</label>
+<input id="memberName" required placeholder="Full name">
+
+<label>Phone Number</label>
+<input id="memberPhone" placeholder="Phone number">
+
+<label>Player Level</label>
+<select id="memberLevel">
+<option>Beginner</option>
+<option>Intermediate</option>
+<option>Advanced</option>
+</select>
+
+<label>Membership Status</label>
+<select id="memberStatus">
+<option>Active</option>
+<option>Inactive</option>
+</select>
+
+<button class="btn" type="submit">Save Member</button>
+<button class="btn light" type="button"
+onclick="resetMember()">Clear</button>
+
+</form>
+
+</div>
+
+<div class="panel">
+
+<h3>Registered Members</h3>
+
+<input id="memberSearch"
+placeholder="Search member..."
+oninput="renderMembers()">
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Name</th>
+<th>Phone</th>
+<th>Level</th>
+<th>Status</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="memberRows"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- TOURNAMENTS -->
+
+<section id="tournaments" class="page">
+
+<h2>Tournament Management</h2>
+
+<div class="panel">
+
+<h3>Create Tournament</h3>
+
+<form id="tournamentForm">
+
+<input type="hidden" id="tournamentEdit">
+
+<label>Tournament Name</label>
+<input id="tournamentName" required
+placeholder="Tournament name">
+
+<label>Date</label>
+<input id="tournamentDate" type="date" required>
+
+<label>Format</label>
+<select id="tournamentFormat">
+<option>Men's Doubles</option>
+<option>Women's Doubles</option>
+<option>Mixed Doubles</option>
+<option>Singles</option>
+</select>
+
+<button class="btn" type="submit">Save Tournament</button>
+<button class="btn light" type="button"
+onclick="resetTournament()">Clear</button>
+
+</form>
+
+</div>
+
+<div class="panel">
+<h3>Tournament List</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Date</th>
+<th>Format</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="tournamentRows"></tbody>
+</table>
+</div>
+</div>
+
+</section>
+
+<!-- MATCHES -->
+
+<section id="matches" class="page">
+
+<h2>Match Management</h2>
+
+<div class="panel">
+
+<h3>Record Match</h3>
+
+<form id="matchForm">
+
+<input type="hidden" id="matchEdit">
+
+<label>Tournament</label>
+<select id="matchTournament"></select>
+
+<label>Player / Team A</label>
+<input id="matchA" required>
+
+<label>Player / Team B</label>
+<input id="matchB" required>
+
+<label>Score A</label>
+<input id="scoreA" type="number" min="0" required>
+
+<label>Score B</label>
+<input id="scoreB" type="number" min="0" required>
+
+<label>Status</label>
+<select id="matchStatus">
+<option>Completed</option>
+<option>Scheduled</option>
+</select>
+
+<button class="btn" type="submit">Save Match</button>
+<button class="btn light" type="button"
+onclick="resetMatch()">Clear</button>
+
+</form>
+
+</div>
+
+<div class="panel">
+
+<h3>Match Results</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Tournament</th>
+<th>Team A</th>
+<th>Score</th>
+<th>Team B</th>
+<th>Winner</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="matchRows"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- RANKINGS -->
+
+<section id="rankings" class="page">
+
+<h2>Player Rankings</h2>
+
+<div class="panel">
+<p class="notice">
+Rankings are calculated from completed matches.
+Players or teams receive one win for each completed match won.
+</p>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Rank</th>
+<th>Player / Team</th>
+<th>Played</th>
+<th>Wins</th>
+<th>Losses</th>
+</tr>
+</thead>
+<tbody id="rankingRows"></tbody>
+</table>
+</div>
+</div>
+
+</section>
+
+<!-- PAYMENTS -->
+
+<section id="payments" class="page">
+
+<h2>Payment Management</h2>
+
+<div class="panel">
+
+<h3>Record Payment</h3>
+
+<form id="paymentForm">
+
+<input type="hidden" id="paymentEdit">
+
+<label>Member</label>
+<select id="paymentMember"></select>
+
+<label>Payment Type</label>
+<select id="paymentType">
+<option>Membership Fee</option>
+<option>Tournament Fee</option>
+<option>Other</option>
+</select>
+
+<label>Amount (QAR)</label>
+<input id="paymentAmount" type="number"
+min="0.01" step="0.01" required>
+
+<label>Payment Status</label>
+<select id="paymentStatus">
+<option>Paid</option>
+<option>Pending</option>
+</select>
+
+<label>Date</label>
+<input id="paymentDate" type="date" required>
+
+<button class="btn" type="submit">Save Payment</button>
+<button class="btn light" type="button"
+onclick="resetPayment()">Clear</button>
+
+</form>
+
+</div>
+
+<div class="panel">
+
+<h3>Payment Records</h3>
+
+<div class="table-wrap">
+<table>
+<thead>
+<tr>
+<th>Member</th>
+<th>Type</th>
+<th>Amount</th>
+<th>Status</th>
+<th>Date</th>
+<th>Actions</th>
+</tr>
+</thead>
+<tbody id="paymentRows"></tbody>
+</table>
+</div>
+
+</div>
+</section>
+
+<!-- REPORTS -->
+
+<section id="reports" class="page">
+
+<h2>Reports & Backup</h2>
+
+<div class="panel">
+
+<h3>Export Data</h3>
+
+<button class="btn" onclick="exportCSV('members')">
+Export Members
+</button>
+
+<button class="btn" onclick="exportCSV('tournaments')">
+Export Tournaments
+</button>
+
+<button class="btn" onclick="exportCSV('matches')">
+Export Matches
+</button>
+
+<button class="btn" onclick="exportCSV('payments')">
+Export Payments
+</button>
+
+</div>
+
+<div class="panel">
+
+<h3>Backup All Data</h3>
+
+<button class="btn" onclick="backupData()">
+Download Backup
+</button>
+
+<label>Restore Backup</label>
+<input type="file" id="restoreFile" accept=".json">
+
+<button class="btn" onclick="restoreData()">
+Restore Data
+</button>
+
+</div>
+
+<div class="panel">
+
+<h3>Clear All Records</h3>
+
+<p class="notice">
+This permanently clears the records stored in this browser.
+Download a backup before proceeding.
+</p>
+
+<button class="btn danger" onclick="clearAll()">
+Clear All Data
+</button>
+
+</div>
+
+</section>
+
+</main>
+
+<footer>
+MBQ Pickleball Club Management System
+</footer>
+
 <script>
-const sections=["Dashboard","Courts","Tournaments","Players","Matches","Reports"];let current="Dashboard";const keys={Courts:"mbq_courts",Tournaments:"mbq_tournaments",Players:"mbq_players",Matches:"mbq_matches"};
-function get(k){try{return JSON.parse(localStorage.getItem(keys[k])||"[]")}catch{return []}}function save(k,v){localStorage.setItem(keys[k],JSON.stringify(v))}function esc(s){return String(s??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function nav(){document.getElementById("nav").innerHTML=sections.map(s=>`<button class="${s===current?"active":""}" onclick="go('${s}')">${s==="Dashboard"?"▦":s==="Courts"?"▤":s==="Tournaments"?"🏆":s==="Players"?"♙":s==="Matches"?"🎾":"▥"} &nbsp;${s}</button>`).join("")}function go(s){current=s;nav();render()}function metric(label,value){return `<div class="card"><div class="label">${label}</div><div class="metric">${value}</div></div>`}
-function table(items,fields,k){if(!items.length)return `<div class="empty">No records yet. Add your first record above.</div>`;return `<div class="tablewrap"><table><thead><tr>${fields.map(f=>`<th>${f[1]}</th>`).join("")}<th>Action</th></tr></thead><tbody>${items.map((it,i)=>`<tr>${fields.map(f=>`<td>${esc(it[f[0]])}</td>`).join("")}<td><button class="btn danger" style="padding:6px 9px" onclick="del('${k}',${i})">Delete</button></td></tr>`).join("")}</tbody></table></div>`}function del(k,i){let a=get(k);a.splice(i,1);save(k,a);render()}
-const configs={Courts:{fields:[["name","Court name"],["location","Location"],["status","Status"]],inputs:[["name","Court name","text"],["location","Location","text"],["status","Status","select","Available,Reserved,Maintenance"]]},Tournaments:{fields:[["name","Tournament"],["date","Date"],["format","Format"],["status","Status"]],inputs:[["name","Tournament name","text"],["date","Date","date"],["format","Format","select","Men's Doubles,Mixed Doubles,Women's Doubles,Round Robin,Single Elimination"],["status","Status","select","Planning,Registration Open,In Progress,Completed"]]},Players:{fields:[["name","Player name"],["phone","Contact"],["skill","Level"],["status","Status"]],inputs:[["name","Player full name","text"],["phone","Phone / email","text"],["skill","Skill level","select","Beginner,Intermediate,Advanced"],["status","Status","select","Active,Inactive"]]},Matches:{fields:[["date","Date"],["court","Court"],["players","Players / Teams"],["score","Score"],["status","Status"]],inputs:[["date","Date","date"],["court","Court","text"],["players","Players / Teams","text"],["score","Score","text"],["status","Status","select","Scheduled,In Progress,Completed"]]}}
-function form(k,c){return `<form onsubmit="add(event,'${k}')"><div class="formgrid">${c.inputs.map(x=>`<div><label class="small">${x[1]}</label>${x[2]==="select"?`<select name="${x[0]}">${x[3].split(",").map(v=>`<option>${v}</option>`).join("")}</select>`:`<input name="${x[0]}" type="${x[2]}" placeholder="${x[1]}" ${x[2]==="text"?"required":""}>`}</div>`).join("")}<div style="display:flex;align-items:end"><button class="btn" type="submit">＋ Add record</button></div></div></form>`}function add(e,k){e.preventDefault();let obj=Object.fromEntries(new FormData(e.target).entries());let a=get(k);a.push(obj);save(k,a);render()}
-function render(){const app=document.getElementById("app");if(current==="Dashboard"){app.innerHTML=`<div class="topline"><div><h2>Club Dashboard</h2><div class="sub">Welcome to the MBQ Pickleball Club management workspace.</div></div><span class="pill">MBQ · Pickleball Club</span></div><div class="cards">${metric("Registered Players",get("Players").length)}${metric("Courts",get("Courts").length)}${metric("Tournaments",get("Tournaments").length)}${metric("Matches",get("Matches").length)}</div><div class="panel"><h3>Quick start</h3><p>Add your courts and players first, then create tournaments and schedule matches.</p><div class="actions">${sections.slice(1,5).map(s=>`<button class="btn secondary" onclick="go('${s}')">Manage ${s}</button>`).join("")}</div></div><div class="notice"><b>Storage note:</b> This starter version saves records in this browser on this device. It does not yet have online shared storage, secure user accounts, or automatic backups. Avoid entering sensitive personal information.</div>`}else if(current==="Reports"){app.innerHTML=`<h2>Reports</h2><div class="sub">Current record totals based on this browser's saved data.</div><div class="cards">${Object.keys(keys).map(k=>metric(k,get(k).length)).join("")}</div><div class="panel"><h3>Export data backup</h3><p>Download the current browser records as a JSON backup.</p><button class="btn" onclick="exportData()">Download backup</button> <button class="btn secondary" onclick="document.getElementById('importFile').click()">Import backup</button><input id="importFile" type="file" accept=".json,application/json" style="display:none" onchange="importData(event)"></div>`}else{let c=configs[current];app.innerHTML=`<div class="topline"><h2>${current}</h2><span class="pill">${get(current).length} records</span></div><div class="panel"><h3>Add ${current==="Tournaments"?"tournament":current.slice(0,-1)}</h3>${form(current,c)}</div><div class="panel"><h3>${current} list</h3>${table(get(current),c.fields,current)}</div>`}}
-function exportData(){let d={};Object.keys(keys).forEach(k=>d[k]=get(k));let b=new Blob([JSON.stringify(d,null,2)],{type:"application/json"});let a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="mbq-club-backup.json";a.click();URL.revokeObjectURL(a.href)}function importData(e){let f=e.target.files[0];if(!f)return;let r=new FileReader();r.onload=()=>{try{let d=JSON.parse(r.result);Object.keys(keys).forEach(k=>{if(Array.isArray(d[k]))save(k,d[k])});render();alert("Backup imported.")}catch{alert("That backup file could not be read.")}};r.readAsText(f)}nav();render();
-</script></body></html>
+
+// =====================================
+// MBQ CLUB DATABASE
+// =====================================
+
+const DBKEY = "mbq_club_management_v1";
+
+let db = loadDB();
+
+function loadDB(){
+
+ try{
+
+  const saved = localStorage.getItem(DBKEY);
+
+  if(saved){
+
+   const data = JSON.parse(saved);
+
+   return {
+    members:data.members || [],
+    tournaments:data.tournaments || [],
+    matches:data.matches || [],
+    payments:data.payments || []
+   };
+
+  }
+
+ }catch(e){
+
+  alert("Could not read saved data.");
+
+ }
+
+ return {
+  members:[],
+  tournaments:[],
+  matches:[],
+  payments:[]
+ };
+
+}
+
+function saveDB(){
+
+ localStorage.setItem(DBKEY,JSON.stringify(db));
+
+ renderAll();
+
+}
+
+function id(){
+
+ return Date.now().toString(36) +
+ Math.random().toString(36).slice(2,7);
+
+}
+
+function today(){
+
+ return new Date().toISOString().slice(0,10);
+
+}
+
+function safe(value){
+
+ return String(value ?? "").replace(/[&<>"']/g,
+ function(c){
+
+  return {
+   "&":"&amp;",
+   "<":"&lt;",
+   ">":"&gt;",
+   '"':"&quot;",
+   "'":"&#39;"
+  }[c];
+
+ });
+
+}
+
+function money(value){
+
+ return "QAR " + Number(value || 0).toFixed(2);
+
+}
+
+// =====================================
+// NAVIGATION
+// =====================================
+
+function showPage(page,button){
+
+ document.querySelectorAll(".page")
+ .forEach(p=>p.classList.remove("active"));
+
+ document.getElementById(page)
+ .classList.add("active");
+
+ document.querySelectorAll("nav button")
+ .forEach(b=>b.classList.remove("active"));
+
+ if(button)button.classList.add("active");
+
+ renderAll();
+
+}
+
+// =====================================
+// MEMBER MANAGEMENT
+// =====================================
+
+document.getElementById("memberForm")
+.addEventListener("submit",function(e){
+
+ e.preventDefault();
+
+ const edit=document.getElementById("memberEdit").value;
+
+ const record={
+  id:edit || id(),
+  name:document.getElementById("memberName").value.trim(),
+  phone:document.getElementById("memberPhone").value.trim(),
+  level:document.getElementById("memberLevel").value,
+  status:document.getElementById("memberStatus").value
+ };
+
+ if(!record.name)return;
+
+ if(edit){
+
+  db.members=db.members.map(m=>
+   m.id===edit?record:m
+  );
+
+ }else{
+
+  db.members.push(record);
+
+ }
+
+ resetMember();
+ saveDB();
+
+});
+
+function resetMember(){
+
+ document.getElementById("memberForm").reset();
+
+ document.getElementById("memberEdit").value="";
+
+}
+
+function editMember(id){
+
+ const m=db.members.find(x=>x.id===id);
+
+ if(!m)return;
+
+ document.getElementById("memberEdit").value=m.id;
+ document.getElementById("memberName").value=m.name;
+ document.getElementById("memberPhone").value=m.phone;
+ document.getElementById("memberLevel").value=m.level;
+ document.getElementById("memberStatus").value=m.status;
+
+ showPage("members");
+
+}
+
+function deleteMember(id){
+
+ if(!confirm("Delete this member?"))return;
+
+ db.members=db.members.filter(m=>m.id!==id);
+
+ saveDB();
+
+}
+
+function renderMembers(){
+
+ const search=document.getElementById("memberSearch")
+ .value.toLowerCase();
+
+ const rows=db.members.filter(m=>
+  (m.name+" "+m.phone).toLowerCase().includes(search)
+ );
+
+ document.getElementById("memberRows").innerHTML=
+ rows.map(m=>`
+
+ <tr>
+ <td>${safe(m.id.slice(-6))}</td>
+ <td>${safe(m.name)}</td>
+ <td>${safe(m.phone)}</td>
+ <td>${safe(m.level)}</td>
+ <td>${safe(m.status)}</td>
+ <td class="actions">
+
+ <button class="btn light"
+ onclick="editMember('${m.id}')">Edit</button>
+
+ <button class="btn danger"
+ onclick="deleteMember('${m.id}')">Delete</button>
+
+ </td>
+ </tr>
+
+ `).join("");
+
+}
+
+// =====================================
+// TOURNAMENT MANAGEMENT
+// =====================================
+
+document.getElementById("tournamentForm")
+.addEventListener("submit",function(e){
+
+ e.preventDefault();
+
+ const edit=document.getElementById("tournamentEdit").value;
+
+ const record={
+  id:edit || id(),
+  name:document.getElementById("tournamentName").value.trim(),
+  date:document.getElementById("tournamentDate").value,
+  format:document.getElementById("tournamentFormat").value
+ };
+
+ if(!record.name)return;
+
+ if(edit){
+
+  db.tournaments=db.tournaments.map(t=>
+   t.id===edit?record:t
+  );
+
+ }else{
+
+  db.tournaments.push(record);
+
+ }
+
+ resetTournament();
+ saveDB();
+
+});
+
+function resetTournament(){
+
+ document.getElementById("tournamentForm").reset();
+
+ document.getElementById("tournamentEdit").value="";
+
+}
+
+function editTournament(id){
+
+ const t=db.tournaments.find(x=>x.id===id);
+
+ if(!t)return;
+
+ document.getElementById("tournamentEdit").value=t.id;
+ document.getElementById("tournamentName").value=t.name;
+ document.getElementById("tournamentDate").value=t.date;
+ document.getElementById("tournamentFormat").value=t.format;
+
+ showPage("tournaments");
+
+}
+
+function deleteTournament(id){
+
+ if(!confirm("Delete tournament?"))return;
+
+ db.tournaments=db.tournaments.filter(t=>t.id!==id);
+
+ saveDB();
+
+}
+
+function renderTournaments(){
+
+ document.getElementById("tournamentRows").innerHTML=
+ db.tournaments.map(t=>`
+
+ <tr>
+ <td>${safe(t.name)}</td>
+ <td>${safe(t.date)}</td>
+ <td>${safe(t.format)}</td>
+ <td class="actions">
+
+ <button class="btn light"
+ onclick="editTournament('${t.id}')">Edit</button>
+
+ <button class="btn danger"
+ onclick="deleteTournament('${t.id}')">Delete</button>
+
+ </td>
+ </tr>
+
+ `).join("");
+
+ const select=document.getElementById("matchTournament");
+
+ const current=select.value;
+
+ select.innerHTML=
+ '<option value="">Select tournament</option>'+
+ db.tournaments.map(t=>`
+
+ <option value="${safe(t.id)}">
+ ${safe(t.name)}
+ </option>
+
+ `).join("");
+
+ if(db.tournaments.some(t=>t.id===current)){
+  select.value=current;
+ }
+
+}
+
+// =====================================
+// MATCH MANAGEMENT
+// =====================================
+
+document.getElementById("matchForm")
+.addEventListener("submit",function(e){
+
+ e.preventDefault();
+
+ const edit=document.getElementById("matchEdit").value;
+
+ const a=document.getElementById("matchA").value.trim();
+ const b=document.getElementById("matchB").value.trim();
+
+ if(a.toLowerCase()===b.toLowerCase()){
+
+  alert("Team A and Team B must be different.");
+  return;
+
+ }
+
+ const record={
+  id:edit || id(),
+  tournament:document.getElementById("matchTournament").value,
+  a:a,
+  b:b,
+  scoreA:Number(document.getElementById("scoreA").value),
+  scoreB:Number(document.getElementById("scoreB").value),
+  status:document.getElementById("matchStatus").value
+ };
+
+ if(edit){
+
+  db.matches=db.matches.map(m=>
+   m.id===edit?record:m
+  );
+
+ }else{
+
+  db.matches.push(record);
+
+ }
+
+ resetMatch();
+ saveDB();
+
+});
+
+function resetMatch(){
+
+ document.getElementById("matchForm").reset();
+
+ document.getElementById("matchEdit").value="";
+
+}
+
+function editMatch(id){
+
+ const m=db.matches.find(x=>x.id===id);
+
+ if(!m)return;
+
+ document.getElementById("matchEdit").value=m.id;
+ document.getElementById("matchTournament").value=m.tournament;
+ document.getElementById("matchA").value=m.a;
+ document.getElementById("matchB").value=m.b;
+ document.getElementById("scoreA").value=m.scoreA;
+ document.getElementById("scoreB").value=m.scoreB;
+ document.getElementById("matchStatus").value=m.status;
+
+ showPage("matches");
+
+}
+
+function deleteMatch(id){
+
+ if(!confirm("Delete this match?"))return;
+
+ db.matches=db.matches.filter(m=>m.id!==id);
+
+ saveDB();
+
+}
+
+function tournamentName(id){
+
+ const t=db.tournaments.find(x=>x.id===id);
+
+ return t?t.name:"Unassigned";
+
+}
+
+function winner(m){
+
+ if(m.status!=="Completed")return "Pending";
+
+ if(m.scoreA===m.scoreB)return "Tie";
+
+ return m.scoreA>m.scoreB?m.a:m.b;
+
+}
+
+function renderMatches(){
+
+ document.getElementById("matchRows").innerHTML=
+ db.matches.map(m=>`
+
+ <tr>
+ <td>${safe(tournamentName(m.tournament))}</td>
+ <td>${safe(m.a)}</td>
+ <td>${m.scoreA} - ${m.scoreB}</td>
+ <td>${safe(m.b)}</td>
+ <td>${safe(winner(m))}</td>
+ <td class="actions">
+
+ <button class="btn light"
+ onclick="editMatch('${m.id}')">Edit</button>
+
+ <button class="btn danger"
+ onclick="deleteMatch('${m.id}')">Delete</button>
+
+ </td>
+ </tr>
+
+ `).join("");
+
+}
+
+// =====================================
+// PLAYER RANKINGS
+// =====================================
+
+function renderRankings(){
+
+ const stats={};
+
+ db.matches.filter(m=>m.status==="Completed")
+ .forEach(m=>{
+
+  [m.a,m.b].forEach(name=>{
+
+   if(!stats[name]){
+
+    stats[name]={
+     name:name,
+     played:0,
+     wins:0,
+     losses:0
+    };
+
+   }
+
+   stats[name].played++;
+
+  });
+
+  if(m.scoreA!==m.scoreB){
+
+   const win=m.scoreA>m.scoreB?m.a:m.b;
+   const lose=m.scoreA>m.scoreB?m.b:m.a;
+
+   stats[win].wins++;
+   stats[lose].losses++;
+
+  }
+
+ });
+
+ const sorted=Object.values(stats).sort((a,b)=>
+  b.wins-a.wins ||
+  a.losses-b.losses ||
+  b.played-a.played ||
+  a.name.localeCompare(b.name)
+ );
+
+ document.getElementById("rankingRows").innerHTML=
+ sorted.map((p,i)=>`
+
+ <tr>
+ <td>${i+1}</td>
+ <td>${safe(p.name)}</td>
+ <td>${p.played}</td>
+ <td>${p.wins}</td>
+ <td>${p.losses}</td>
+ </tr>
+
+ `).join("");
+
+}
+
+// =====================================
+// PAYMENT MANAGEMENT
+// =====================================
+
+document.getElementById("paymentForm")
+.addEventListener("submit",function(e){
+
+ e.preventDefault();
+
+ const edit=document.getElementById("paymentEdit").value;
+
+ const record={
+  id:edit || id(),
+  member:document.getElementById("paymentMember").value,
+  type:document.getElementById("paymentType").value,
+  amount:Number(document.getElementById("paymentAmount").value),
+  status:document.getElementById("paymentStatus").value,
+  date:document.getElementById("paymentDate").value
+ };
+
+ if(!record.member){
+
+  alert("Please register a member first.");
+  return;
+
+ }
+
+ if(edit){
+
+  db.payments=db.payments.map(p=>
+   p.id===edit?record:p
+  );
+
+ }else{
+
+  db.payments.push(record);
+
+ }
+
+ resetPayment();
+ saveDB();
+
+});
+
+function resetPayment(){
+
+ document.getElementById("paymentForm").reset();
+
+ document.getElementById("paymentEdit").value="";
+
+ document.getElementById("paymentDate").value=today();
+
+}
+
+function memberName(id){
+
+ const m=db.members.find(x=>x.id===id);
+
+ return m?m.name:"Deleted member";
+
+}
+
+function editPayment(id){
+
+ const p=db.payments.find(x=>x.id===id);
+
+ if(!p)return;
+
+ document.getElementById("paymentEdit").value=p.id;
+ document.getElementById("paymentMember").value=p.member;
+ document.getElementById("paymentType").value=p.type;
+ document.getElementById("paymentAmount").value=p.amount;
+ document.getElementById("paymentStatus").value=p.status;
+ document.getElementById("paymentDate").value=p.date;
+
+ showPage("payments");
+
+}
+
+function deletePayment(id){
+
+ if(!confirm("Delete payment record?"))return;
+
+ db.payments=db.payments.filter(p=>p.id!==id);
+
+ saveDB();
+
+}
+
+function renderPayments(){
+
+ const select=document.getElementById("paymentMember");
+
+ const current=select.value;
+
+ select.innerHTML=
+ '<option value="">Select member</option>'+
+ db.members.map(m=>`
+
+ <option value="${safe(m.id)}">
+ ${safe(m.name)}
+ </option>
+
+ `).join("");
+
+ if(db.members.some(m=>m.id===current)){
+  select.value=current;
+ }
+
+ document.getElementById("paymentRows").innerHTML=
+ db.payments.map(p=>`
+
+ <tr>
+ <td>${safe(memberName(p.member))}</td>
+ <td>${safe(p.type)}</td>
+ <td>${money(p.amount)}</td>
+ <td>${safe(p.status)}</td>
+ <td>${safe(p.date)}</td>
+ <td class="actions">
+
+ <button class="btn light"
+ onclick="editPayment('${p.id}')">Edit</button>
+
+ <button class="btn danger"
+ onclick="deletePayment('${p.id}')">Delete</button>
+
+ </td>
+ </tr>
+
+ `).join("");
+
+}
+
+// =====================================
+// DASHBOARD
+// =====================================
+
+function renderDashboard(){
+
+ document.getElementById("dashMembers").textContent=
+ db.members.length;
+
+ document.getElementById("dashActive").textContent=
+ db.members.filter(m=>m.status==="Active").length;
+
+ document.getElementById("dashTournaments").textContent=
+ db.tournaments.length;
+
+ document.getElementById("dashMatches").textContent=
+ db.matches.filter(m=>m.status==="Completed").length;
+
+ const received=db.payments
+ .filter(p=>p.status==="Paid")
+ .reduce((sum,p)=>sum+p.amount,0);
+
+ document.getElementById("dashPayments").textContent=
+ money(received);
+
+}
+
+// =====================================
+// REPORT EXPORT
+// =====================================
+
+function exportCSV(type){
+
+ const records=db[type];
+
+ if(!records.length){
+
+  alert("No records available to export.");
+  return;
+
+ }
+
+ const headers=Object.keys(records[0]);
+
+ const csv=[
+  headers.join(","),
+  ...records.map(row=>
+   headers.map(key=>
+    '"'+String(row[key] ?? "")
+    .replace(/"/g,'""')+'"'
+   ).join(",")
+  )
+ ].join("\r\n");
+
+ const blob=new Blob(["\uFEFF"+csv],{
+  type:"text/csv;charset=utf-8;"
+ });
+
+ downloadBlob(blob,"mbq_"+type+".csv");
+
+}
+
+function downloadBlob(blob,name){
+
+ const url=URL.createObjectURL(blob);
+
+ const a=document.createElement("a");
+
+ a.href=url;
+ a.download=name;
+
+ document.body.appendChild(a);
+ a.click();
+ a.remove();
+
+ URL.revokeObjectURL(url);
+
+}
+
+// =====================================
+// BACKUP AND RESTORE
+// =====================================
+
+function backupData(){
+
+ const blob=new Blob(
+  [JSON.stringify(db,null,2)],
+  {type:"application/json"}
+ );
+
+ downloadBlob(blob,"mbq_backup.json");
+
+}
+
+async function restoreData(){
+
+ const file=document.getElementById("restoreFile").files[0];
+
+ if(!file){
+
+  alert("Choose a backup JSON file first.");
+  return;
+
+ }
+
+ if(!confirm("Restore backup? Current records will be replaced.")){
+  return;
+ }
+
+ try{
+
+  const data=JSON.parse(await file.text());
+
+  if(!Array.isArray(data.members) ||
+     !Array.isArray(data.tournaments) ||
+     !Array.isArray(data.matches) ||
+     !Array.isArray(data.payments)){
+
+   throw new Error("Invalid backup");
+
+  }
+
+  db=data;
+
+  saveDB();
+
+  alert("Backup restored.");
+
+ }catch(e){
+
+  alert("Invalid backup file.");
+
+ }
+
+}
+
+// =====================================
+// CLEAR DATABASE
+// =====================================
+
+function clearAll(){
+
+ if(!confirm("Delete ALL MBQ records?"))return;
+
+ if(!confirm("This cannot be undone. Continue?"))return;
+
+ db={
+  members:[],
+  tournaments:[],
+  matches:[],
+  payments:[]
+ };
+
+ saveDB();
+
+}
+
+// =====================================
+// RENDER ALL MODULES
+// =====================================
+
+function renderAll(){
+
+ renderDashboard();
+ renderMembers();
+ renderTournaments();
+ renderMatches();
+ renderRankings();
+ renderPayments();
+
+}
+
+// =====================================
+// INITIALIZE
+// =====================================
+
+document.getElementById("paymentDate").value=today();
+
+renderAll();
+
+</script>
+
+</body>
+</html>
