@@ -3,9 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>MBQ Pickleball Club Management</title>
-
 <style>
 *{box-sizing:border-box}
 body{
@@ -117,14 +115,11 @@ footer{text-align:center;padding:20px;color:#64748b}
 }
 </style>
 </head>
-
 <body>
-
 <header>
 <h1>MBQ PICKLEBALL CLUB</h1>
 <p>Complete Club Management System</p>
 </header>
-
 <nav>
 <button class="active" onclick="showPage('dashboard',this)">Dashboard</button>
 <button onclick="showPage('members',this)">Members</button>
@@ -134,102 +129,71 @@ footer{text-align:center;padding:20px;color:#64748b}
 <button onclick="showPage('payments',this)">Payments</button>
 <button onclick="showPage('reports',this)">Reports</button>
 </nav>
-
 <main>
-
 <!-- DASHBOARD -->
-
 <section id="dashboard" class="page active">
-
 <h2>Admin Dashboard</h2>
-
 <div class="cards">
-
 <div class="card">
 <small>Total Members</small>
 <div class="number" id="dashMembers">0</div>
 </div>
-
 <div class="card">
 <small>Active Members</small>
 <div class="number" id="dashActive">0</div>
 </div>
-
 <div class="card">
 <small>Tournaments</small>
 <div class="number" id="dashTournaments">0</div>
 </div>
-
 <div class="card">
 <small>Matches Played</small>
 <div class="number" id="dashMatches">0</div>
 </div>
-
 <div class="card">
 <small>Payments Received</small>
 <div class="number" id="dashPayments">0</div>
 </div>
-
 </div>
-
 <div class="panel">
 <h3>Club Information</h3>
 <p>MBQ Pickleball Club</p>
 <p>Management Dashboard</p>
 <p class="notice">Use the menu above to manage your club records.</p>
 </div>
-
 </section>
-
 <!-- MEMBERS -->
-
 <section id="members" class="page">
-
 <h2>Member Management</h2>
-
 <div class="panel">
-
 <h3>Register Member</h3>
-
 <form id="memberForm">
-
 <input type="hidden" id="memberEdit">
-
 <label>Member Name</label>
 <input id="memberName" required placeholder="Full name">
-
 <label>Phone Number</label>
 <input id="memberPhone" placeholder="Phone number">
-
 <label>Player Level</label>
 <select id="memberLevel">
 <option>Beginner</option>
 <option>Intermediate</option>
 <option>Advanced</option>
 </select>
-
 <label>Membership Status</label>
 <select id="memberStatus">
 <option>Active</option>
 <option>Inactive</option>
 </select>
-
 <button class="btn" type="submit">Save Member</button>
 <button class="btn light" type="button"
 onclick="resetMember()">Clear</button>
-
 </form>
-
 </div>
-
 <div class="panel">
-
 <h3>Registered Members</h3>
-
 <input id="memberSearch"
 placeholder="Search member..."
 oninput="renderMembers()">
-
 <div class="table-wrap">
 <table>
 <thead>
@@ -245,31 +209,20 @@ oninput="renderMembers()">
 <tbody id="memberRows"></tbody>
 </table>
 </div>
-
 </div>
 </section>
-
 <!-- TOURNAMENTS -->
-
 <section id="tournaments" class="page">
-
 <h2>Tournament Management</h2>
-
 <div class="panel">
-
 <h3>Create Tournament</h3>
-
 <form id="tournamentForm">
-
 <input type="hidden" id="tournamentEdit">
-
 <label>Tournament Name</label>
 <input id="tournamentName" required
 placeholder="Tournament name">
-
 <label>Date</label>
 <input id="tournamentDate" type="date" required>
-
 <label>Format</label>
 <select id="tournamentFormat">
 <option>Men's Doubles</option>
@@ -277,18 +230,13 @@ placeholder="Tournament name">
 <option>Mixed Doubles</option>
 <option>Singles</option>
 </select>
-
 <button class="btn" type="submit">Save Tournament</button>
 <button class="btn light" type="button"
 onclick="resetTournament()">Clear</button>
-
 </form>
-
 </div>
-
 <div class="panel">
 <h3>Tournament List</h3>
-
 <div class="table-wrap">
 <table>
 <thead>
@@ -303,56 +251,36 @@ onclick="resetTournament()">Clear</button>
 </table>
 </div>
 </div>
-
 </section>
-
 <!-- MATCHES -->
-
 <section id="matches" class="page">
-
 <h2>Match Management</h2>
-
 <div class="panel">
-
 <h3>Record Match</h3>
-
 <form id="matchForm">
-
 <input type="hidden" id="matchEdit">
-
 <label>Tournament</label>
 <select id="matchTournament"></select>
-
 <label>Player / Team A</label>
 <input id="matchA" required>
-
 <label>Player / Team B</label>
 <input id="matchB" required>
-
 <label>Score A</label>
 <input id="scoreA" type="number" min="0" required>
-
 <label>Score B</label>
 <input id="scoreB" type="number" min="0" required>
-
 <label>Status</label>
 <select id="matchStatus">
 <option>Completed</option>
 <option>Scheduled</option>
 </select>
-
 <button class="btn" type="submit">Save Match</button>
 <button class="btn light" type="button"
 onclick="resetMatch()">Clear</button>
-
 </form>
-
 </div>
-
 <div class="panel">
-
 <h3>Match Results</h3>
-
 <div class="table-wrap">
 <table>
 <thead>
@@ -368,22 +296,16 @@ onclick="resetMatch()">Clear</button>
 <tbody id="matchRows"></tbody>
 </table>
 </div>
-
 </div>
 </section>
-
 <!-- RANKINGS -->
-
 <section id="rankings" class="page">
-
 <h2>Player Rankings</h2>
-
 <div class="panel">
 <p class="notice">
 Rankings are calculated from completed matches.
 Players or teams receive one win for each completed match won.
 </p>
-
 <div class="table-wrap">
 <table>
 <thead>
@@ -399,58 +321,39 @@ Players or teams receive one win for each completed match won.
 </table>
 </div>
 </div>
-
 </section>
-
 <!-- PAYMENTS -->
-
 <section id="payments" class="page">
-
 <h2>Payment Management</h2>
-
 <div class="panel">
-
 <h3>Record Payment</h3>
-
 <form id="paymentForm">
-
 <input type="hidden" id="paymentEdit">
-
 <label>Member</label>
 <select id="paymentMember"></select>
-
 <label>Payment Type</label>
 <select id="paymentType">
 <option>Membership Fee</option>
 <option>Tournament Fee</option>
 <option>Other</option>
 </select>
-
 <label>Amount (QAR)</label>
 <input id="paymentAmount" type="number"
 min="0.01" step="0.01" required>
-
 <label>Payment Status</label>
 <select id="paymentStatus">
 <option>Paid</option>
 <option>Pending</option>
 </select>
-
 <label>Date</label>
 <input id="paymentDate" type="date" required>
-
 <button class="btn" type="submit">Save Payment</button>
 <button class="btn light" type="button"
 onclick="resetPayment()">Clear</button>
-
 </form>
-
 </div>
-
 <div class="panel">
-
 <h3>Payment Records</h3>
-
 <div class="table-wrap">
 <table>
 <thead>
@@ -466,46 +369,31 @@ onclick="resetPayment()">Clear</button>
 <tbody id="paymentRows"></tbody>
 </table>
 </div>
-
 </div>
 </section>
-
 <!-- REPORTS -->
-
 <section id="reports" class="page">
-
 <h2>Reports & Backup</h2>
-
 <div class="panel">
-
 <h3>Export Data</h3>
-
 <button class="btn" onclick="exportCSV('members')">
 Export Members
 </button>
-
 <button class="btn" onclick="exportCSV('tournaments')">
 Export Tournaments
 </button>
-
 <button class="btn" onclick="exportCSV('matches')">
 Export Matches
 </button>
-
 <button class="btn" onclick="exportCSV('payments')">
 Export Payments
 </button>
-
 </div>
-
 <div class="panel">
-
 <h3>Backup All Data</h3>
-
 <button class="btn" onclick="backupData()">
 Download Backup
 </button>
-
 <label>Restore Backup</label>
 <input type="file" id="restoreFile" accept=".json">
 
